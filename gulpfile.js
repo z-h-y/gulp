@@ -20,6 +20,7 @@ gulp.task('styles', function() {
     .pipe(gulp.dest('dist/assets/css'))
     .pipe(notify({ message: 'Styles task complete' }));
 });
+
 // Scripts
 gulp.task('scripts', function() {
   return gulp.src('src/scripts/**/*.js')
