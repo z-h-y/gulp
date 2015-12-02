@@ -35,14 +35,20 @@ gulp.task('scripts', function() {
 });
 // Images
 gulp.task('images', function() {
-  return gulp.src('src/images/**/*')
-    .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
+  return gulp.src('src/images/*')
+    .pipe(cache(imagemin({
+      optimizationLevel: 5, //类型：Number  默认：3  取值范围：0-7（优化等级）
+      progressive: true, //类型：Boolean 默认：false 无损压缩jpg图片
+      interlaced: true, //类型：Boolean 默认：false 隔行扫描gif进行渲染
+      multipass: true, //类型：Boolean 默认：false 多次优化svg直到完全优化
+      svgoPlugins: [{removeViewBox: false}]//不要移除svg的viewbox属性
+    })))
     .pipe(gulp.dest('dist/images'))
     .pipe(notify({ message: 'Images task complete' }));
 });
 // Clean
 gulp.task('clean', function(cb) {
-    del(['dist/assets/css', 'dist/assets/js', 'dist/assets/img'], cb)
+    del(['dist/assets/css/*', 'dist/assets/js', 'dist/images/*'], cb)
 });
 
 // Default task
@@ -56,7 +62,7 @@ gulp.task('watch', function() {
   // Watch .js files
   gulp.watch('src/scripts/**/*.js', ['scripts']);
   // Watch image files
-  gulp.watch('src/images/**/*', ['images']);
+  gulp.watch('src/images/*', ['images']);
   // Create LiveReload server
   livereload.listen();
   // Watch any files in dist/, reload on change
